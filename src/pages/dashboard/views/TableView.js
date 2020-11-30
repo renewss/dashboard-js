@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
+import { Box, Button, makeStyles } from '@material-ui/core';
+import { Add as AddIcon } from '@material-ui/icons';
+import clsx from 'clsx';
+
+import styleConstants from '../../../constants/styleConstants';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -16,7 +21,7 @@ const columns = [
         headerName: 'Full name',
         description: 'This column has a value getter and is not sortable.',
         sortable: false,
-        width: 160,
+        width: 180,
         valueGetter: (params) =>
             `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
     },
@@ -35,10 +40,38 @@ const rows = [
     { id: 10, lastName: 'Swing', firstName: 'Ember', age: 23 },
 ];
 
+//
+const useStyles = makeStyles((theme) => ({
+    boxBtns: {
+        marginBottom: '10px',
+        display: 'flex',
+    },
+    boxTable: {
+        height: 640,
+        width: '100%',
+    },
+
+    // CUSTOM
+    colorPrimary: {
+        color: styleConstants.colorPrimary,
+        backgroundColor: styleConstants.colorBgPrimary,
+    },
+}));
+
 export default function DataTable() {
+    const classes = useStyles();
+    const [activeBtns, setActiveBtns] = useState({ add: true, edit: false, delete: false });
+
     return (
-        <div style={{ height: 640, width: '100%' }}>
-            <DataGrid rows={rows} columns={columns} pageSize={10} checkboxSelection />
-        </div>
+        <>
+            <Box className={classes.boxBtns}>
+                <Button className={classes.colorPrimary} startIcon={<AddIcon />}>
+                    Add
+                </Button>
+            </Box>
+            <Box className={classes.boxTable}>
+                <DataGrid rows={rows} columns={columns} pageSize={10} checkboxSelection />
+            </Box>
+        </>
     );
 }

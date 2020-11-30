@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '10px',
         backgroundColor: styleConstants.colorPrimary,
     },
+    particles: {
+        width: '100%',
+        height: '100%',
+    },
 
     // Customization
     colorPrimary: {
@@ -44,10 +48,11 @@ function Home() {
     return (
         <div className={clsx(classes.root, classes.colorPrimary)}>
             <Particles
+                className={classes.particles}
                 params={{
                     particles: {
                         number: {
-                            value: 45,
+                            value: 65,
                         },
                         shape: {
                             type: 'circle',

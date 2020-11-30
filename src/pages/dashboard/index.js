@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 
 import Navbar from './components/Navbar';
-import View1 from './views/view1';
-import View2 from './views/view2';
-import View3 from './views/view3';
+import View1 from './views/ChartView';
+import View2 from './views/GraphView';
+import View3 from './views/TableView';
 import constStyles from '../../constants/styleConstants';
 
 //
