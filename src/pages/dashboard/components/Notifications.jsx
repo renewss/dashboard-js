@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IconButton, Menu, MenuItem, Badge, makeStyles } from '@material-ui/core';
 import { Notifications as NotificationsIcon } from '@material-ui/icons';
-import clsx from 'clsx';
 import ListMaker from './ListMaker';
 
 import styleConstants from '../../../constants/styleConstants';
