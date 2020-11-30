@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
 const columns = [
@@ -32,12 +32,13 @@ const rows = [
     { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    { id: 10, lastName: 'Swing', firstName: 'Ember', age: 23 },
 ];
 
 export default function DataTable() {
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+        <div style={{ height: 640, width: '100%' }}>
+            <DataGrid rows={rows} columns={columns} pageSize={10} checkboxSelection />
         </div>
     );
 }

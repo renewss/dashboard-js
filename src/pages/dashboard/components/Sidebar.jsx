@@ -75,10 +75,10 @@ const useStyles = makeStyles((theme) => ({
 
     // CUSTOMIZATION
     colorPrimary: {
-        color: '#263055',
+        color: styleConstants.colorSecondary,
     },
     colorBgPrimary: {
-        background: 'linear-gradient(rgba(255,255,255,1) 0%, rgba(224,228,231,1) 100%);',
+        background: styleConstants.colorBgSecondary,
     },
 }));
 

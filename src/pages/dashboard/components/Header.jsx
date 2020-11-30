@@ -50,10 +50,10 @@ const useStyles = makeStyles((theme) => ({
 
     // CUSTOMIZATION
     colorPrimary: {
-        color: '#fff',
+        color: styleConstants.colorPrimary,
     },
     colorBgPrimary: {
-        backgroundColor: '#3D4977',
+        backgroundColor: styleConstants.colorBgPrimary,
     },
 }));
 
