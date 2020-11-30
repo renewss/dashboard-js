@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import { Box, Button, makeStyles } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 import clsx from 'clsx';
+
+import { connect } from 'react-redux';
+import { dialogOpen, dialogClose } from '../../../redux/actions/dialogFormActions';
 
 import DialogForm from '../components/DialogForm';
 import styleConstants from '../../../constants/styleConstants';
@@ -62,16 +65,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DataTable() {
+//
+
+function TableView(props) {
     // Hooks
     const classes = useStyles();
     const [activeBtns, setActiveBtns] = useState({ add: true, edit: false, delete: false });
-    const [dialogOpen, setDialogOpen] = useState(false);
     const [data, setData] = useState(rows);
+
+    useEffect(() => {
+        props.dialogFormClose();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [0]);
 
     // Handlers
     function handleSelection(newSelection) {
-        console.log(newSelection);
         if (newSelection.rowIds.length === 0)
             setActiveBtns({ add: true, edit: false, delete: false });
         else if (newSelection.rowIds.length === 1)
@@ -80,14 +88,11 @@ export default function DataTable() {
     }
 
     function handleClickBtn() {
-        setDialogOpen(true);
+        props.dialogFormOpen();
     }
-    function handleCloseBtn() {
-        setDialogOpen(false);
-    }
+    // function handleCloseBtn() {}
 
     //
-
     return (
         <>
             <Box className={classes.boxBtns}>
@@ -97,7 +102,6 @@ export default function DataTable() {
                     className={clsx(classes.boxBtn, [!activeBtns.add && classes.hidden])}
                     startIcon={<AddIcon />}
                     onClick={handleClickBtn}
-                    closeform={handleCloseBtn}
                 >
                     Add
                 </Button>
@@ -117,7 +121,7 @@ export default function DataTable() {
                     Delete
                 </Button>
             </Box>
-            <DialogForm open={dialogOpen} />
+            <DialogForm open={props.dialogForm.open} />
 
             <Box className={classes.boxTable}>
                 <DataGrid
@@ -133,3 +137,13 @@ export default function DataTable() {
         </>
     );
 }
+
+// Redux
+const mapStatetoProps = (state) => ({
+    dialogForm: { ...state.dialogForm },
+});
+const mapDispatchToProps = (dispatch) => ({
+    dialogFormOpen: (payload) => dispatch(dialogOpen(payload)),
+    dialogFormClose: (payload) => dispatch(dialogClose(payload)),
+});
+export default connect(mapStatetoProps, mapDispatchToProps)(TableView);

@@ -7,10 +7,23 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function FormDialog(props) {
+import { connect } from 'react-redux';
+import { dialogClose } from '../../../redux/actions/dialogFormActions';
+
+//
+
+function DialogForm(props) {
+    function handleClose() {
+        props.dialogFormClose();
+    }
+
     return (
         <div>
-            <Dialog open={props.open} onClose={props.closeform} aria-labelledby="form-dialog-title">
+            <Dialog
+                open={!!props.dialogForm.open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+            >
                 <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -27,10 +40,10 @@ export default function FormDialog(props) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.closeform} color="primary">
+                    <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={props.closeform} color="primary">
+                    <Button onClick={handleClose} color="primary">
                         Subscribe
                     </Button>
                 </DialogActions>
@@ -38,3 +51,12 @@ export default function FormDialog(props) {
         </div>
     );
 }
+
+// Redux
+const mapStatetoProps = (state) => ({
+    dialogForm: { ...state.dialogForm },
+});
+const mapDispatchToProps = (dispatch) => ({
+    dialogFormClose: (payload) => dispatch(dialogClose(payload)),
+});
+export default connect(mapStatetoProps, mapDispatchToProps)(DialogForm);
