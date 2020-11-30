@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import { Box, Button, makeStyles } from '@material-ui/core';
-import { Add as AddIcon } from '@material-ui/icons';
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 import clsx from 'clsx';
 
+import DialogForm from '../components/DialogForm';
 import styleConstants from '../../../constants/styleConstants';
 
 const columns = [
@@ -42,13 +43,16 @@ const rows = [
 
 //
 const useStyles = makeStyles((theme) => ({
-    boxBtns: {
-        marginBottom: '10px',
-        display: 'flex',
+    boxBtn: {
+        marginRight: '5px',
     },
     boxTable: {
         height: 640,
         width: '100%',
+        marginTop: '10px',
+    },
+    hidden: {
+        display: 'none',
     },
 
     // CUSTOM
@@ -59,18 +63,72 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DataTable() {
+    // Hooks
     const classes = useStyles();
     const [activeBtns, setActiveBtns] = useState({ add: true, edit: false, delete: false });
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [data, setData] = useState(rows);
+
+    // Handlers
+    function handleSelection(newSelection) {
+        console.log(newSelection);
+        if (newSelection.rowIds.length === 0)
+            setActiveBtns({ add: true, edit: false, delete: false });
+        else if (newSelection.rowIds.length === 1)
+            setActiveBtns({ add: true, edit: true, delete: true });
+        else setActiveBtns({ add: true, edit: false, delete: true });
+    }
+
+    function handleClickBtn() {
+        setDialogOpen(true);
+    }
+    function handleCloseBtn() {
+        setDialogOpen(false);
+    }
+
+    //
 
     return (
         <>
             <Box className={classes.boxBtns}>
-                <Button className={classes.colorPrimary} startIcon={<AddIcon />}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={clsx(classes.boxBtn, [!activeBtns.add && classes.hidden])}
+                    startIcon={<AddIcon />}
+                    onClick={handleClickBtn}
+                    closeform={handleCloseBtn}
+                >
                     Add
                 </Button>
+                <Button
+                    variant="contained"
+                    className={clsx(classes.boxBtn, [!activeBtns.edit && classes.hidden])}
+                    startIcon={<EditIcon />}
+                >
+                    Edit
+                </Button>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    className={clsx(classes.boxBtn, [!activeBtns.delete && classes.hidden])}
+                    startIcon={<DeleteIcon />}
+                >
+                    Delete
+                </Button>
             </Box>
+            <DialogForm open={dialogOpen} />
+
             <Box className={classes.boxTable}>
-                <DataGrid rows={rows} columns={columns} pageSize={10} checkboxSelection />
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    pageSize={10}
+                    checkboxSelection
+                    onSelectionChange={(newSelection) => {
+                        handleSelection(newSelection);
+                    }}
+                />
             </Box>
         </>
     );

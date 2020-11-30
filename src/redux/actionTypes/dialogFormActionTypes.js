@@ -1,0 +1,2 @@
+export const DIALOGFORM_OPEN = 'DIALOG_OPEN';
+export const DIALOGFORM_CLOSE = 'DIALOG_CLOSE';

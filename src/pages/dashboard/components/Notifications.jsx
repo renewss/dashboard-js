@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { IconButton, Menu, MenuItem, Badge, makeStyles } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Badge, makeStyles, Typography } from '@material-ui/core';
 import { Notifications as NotificationsIcon } from '@material-ui/icons';
-import ListMaker from './ListMaker';
 
 import styleConstants from '../../../constants/styleConstants';
 
@@ -52,9 +51,11 @@ export default function Notifications(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>
-                    <ListMaker list={['update v.1', 'update v.2', 'update v.3']} />
-                </MenuItem>
+                {['update v.1', 'update v.2', 'update v.3'].map((item) => (
+                    <MenuItem onClick={handleClose} key={item}>
+                        <Typography>{item}</Typography>{' '}
+                    </MenuItem>
+                ))}
             </Menu>
         </div>
     );
