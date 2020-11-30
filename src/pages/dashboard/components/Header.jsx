@@ -1,19 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import {
-    AppBar,
-    Toolbar,
-    IconButton,
-    Badge,
-    Avatar,
-    makeStyles,
-    Typography,
-    Box,
-} from '@material-ui/core';
-import { Menu as MenuIcon, Notifications as NotificationsIcon } from '@material-ui/icons';
+import { AppBar, Toolbar, IconButton, makeStyles, Typography, Box } from '@material-ui/core';
+import { Menu as MenuIcon } from '@material-ui/icons';
 import clsx from 'clsx';
 
-import ButtonMenu from './ButtonMenu';
+import UserAvatar from './UserAvatar';
+import Notifications from './Notifications';
 import styleConstants from '../../../constants/styleConstants';
 
 //
@@ -88,26 +80,8 @@ export default function Header(props) {
 
                 <div className={classes.grow} />
 
-                <IconButton>
-                    <Badge badgeContent={0} color="secondary">
-                        <NotificationsIcon className={classes.colorPrimary} />
-                    </Badge>
-                </IconButton>
-
-                <ButtonMenu
-                    menuList={[
-                        { label: 'Profile', link: `${url}/user` },
-                        { label: 'Settings', link: `${url}/settings` },
-                        { label: 'Logout', link: '/logout' },
-                    ]}
-                >
-                    <Avatar
-                        className={classes.colorPrimary}
-                        style={{ width: '30px', height: '30px' }}
-                    >
-                        H
-                    </Avatar>
-                </ButtonMenu>
+                <Notifications style={{ marginRight: '10px' }} />
+                <UserAvatar url={url} />
             </Toolbar>
         </AppBar>
     );
