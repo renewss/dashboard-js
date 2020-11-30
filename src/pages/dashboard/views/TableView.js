@@ -121,7 +121,7 @@ function TableView(props) {
                     Delete
                 </Button>
             </Box>
-            <DialogForm open={props.dialogForm.open} />
+            <DialogForm open={props.dialogForm.open} handleData={setData} />
 
             <Box className={classes.boxTable}>
                 <DataGrid

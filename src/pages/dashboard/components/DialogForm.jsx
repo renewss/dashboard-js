@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,8 +13,17 @@ import { dialogClose } from '../../../redux/actions/dialogFormActions';
 //
 
 function DialogForm(props) {
+    const [input, setInput] = useState(null);
     function handleClose() {
         props.dialogFormClose();
+    }
+    function handleSubmit(e) {
+        console.log(input);
+
+        handleClose();
+    }
+    function handleTextChange(e) {
+        setInput(e.target.value);
     }
 
     return (
@@ -37,13 +46,14 @@ function DialogForm(props) {
                         label="Email Address"
                         type="email"
                         fullWidth
+                        onChange={handleTextChange}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleSubmit} color="primary">
                         Subscribe
                     </Button>
                 </DialogActions>
