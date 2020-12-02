@@ -5,6 +5,7 @@ export const dialogOpen = (payload) => {
         type: actionTypes.DIALOGFORM_OPEN,
         payload: {
             open: true,
+            ...payload
         },
     };
 };

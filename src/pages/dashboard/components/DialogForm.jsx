@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,17 +9,34 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { connect } from 'react-redux';
 import { dialogClose } from '../../../redux/actions/dialogFormActions';
-import { tableDataRowAdd } from '../../../redux/actions/tableDataActions';
+import { tableDataRowAdd, tableDataRowEdit } from '../../../redux/actions/tableDataActions';
 
 //
 
 function DialogForm(props) {
+    const [fieldData, setFieldData] = useState({id: null, firstName: null, lastName: null, age: null}) 
     const [input, setInput] = useState({ firstName: null, lastName: null, age: null });
+
+    useEffect(() => {
+        if(props.dialogForm.isNew){
+            return 
+        }
+        else if(props.dialogForm.id){
+            const {id, firstName, lastName, age} = props.tableData.filter(el => el.id === props.dialogForm.id)[0];
+            setFieldData({id, firstName, lastName, age}) 
+            setInput({firstName, lastName, age})
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.dialogForm])
+
     function handleClose() {
         props.dialogFormClose();
     }
     function handleSubmit(e) {
-        props.tableDataRowAdd({ id: props.tableData.length, ...input });
+        if(props.tableData.isNew)
+            props.tableDataRowAdd({ id: props.tableData.length, ...input });
+        else   
+            props.tableDataRowEdit({id: fieldData.id, ...input})
 
         handleClose();
     }
@@ -30,6 +47,8 @@ function DialogForm(props) {
             setInput(obj);
         };
     }
+
+
 
     return (
         <div>
@@ -45,23 +64,26 @@ function DialogForm(props) {
                         autoFocus
                         margin="dense"
                         id="firstName"
-                        label="First Name"
+                        label="Required"
                         fullWidth
+                        defaultValue={fieldData.firstName}
                         onChange={handleTextChange('firstName')}
                     />
                     <TextField
                         margin="dense"
                         id="lastname"
-                        label="Last Name"
+                        label="Required"
                         fullWidth
+                        defaultValue={fieldData.lastName}
                         onChange={handleTextChange('lastName')}
                     />
                     <TextField
                         margin="dense"
                         id="age"
                         label="Age"
-                        type="number"
+                        type="Required"
                         fullWidth
+                        defaultValue={fieldData.age}
                         onChange={handleTextChange('age')}
                     />
                 </DialogContent>
@@ -86,5 +108,6 @@ const mapStatetoProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     dialogFormClose: (payload) => dispatch(dialogClose(payload)),
     tableDataRowAdd: (payload) => dispatch(tableDataRowAdd(payload)),
+    tableDataRowEdit: (payload) => dispatch(tableDataRowEdit(payload))
 });
 export default connect(mapStatetoProps, mapDispatchToProps)(DialogForm);

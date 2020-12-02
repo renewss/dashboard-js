@@ -7,6 +7,13 @@ export const tableDataRowAdd = (payload) => {
     };
 };
 
+export const tableDataRowEdit = payload => {
+    return {
+        type: actionTypes.TABLEDATA_ROW_EDIT,
+        payload,
+    }
+}
+
 export const tableDataRowRemove = (payload) => {
     return {
         type: actionTypes.TABLEDATA_ROW_REMOVE,
