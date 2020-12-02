@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 function TableView(props) {
     // Hooks
     const classes = useStyles();
-    const [activeBtns, setActiveBtns] = useState({ add: true, edit: false, delete: false });
+    const [selected, setSelected] = useState([]);
 
     useEffect(() => {
         props.dialogFormClose();
@@ -78,17 +78,18 @@ function TableView(props) {
 
     // Handlers
     function handleSelection(newSelection) {
-        if (newSelection.rowIds.length === 0)
-            setActiveBtns({ add: true, edit: false, delete: false });
-        else if (newSelection.rowIds.length === 1)
-            setActiveBtns({ add: true, edit: true, delete: true });
-        else setActiveBtns({ add: true, edit: false, delete: true });
+        setSelected(newSelection.rowIds);
     }
 
-    function handleClickBtn() {
+    function handleClickAddBtn() {
         props.dialogFormOpen();
     }
-    // function handleCloseBtn() {}
+    function handleClickDeleteBtn() {
+        console.log(selected);
+        selected.forEach((id) => {
+            props.tableDataRowRemove({ id: id * 1 });
+        });
+    }
 
     //
     return (
@@ -97,15 +98,15 @@ function TableView(props) {
                 <Button
                     variant="contained"
                     color="primary"
-                    className={clsx(classes.boxBtn, [!activeBtns.add && classes.hidden])}
+                    className={clsx(classes.boxBtn)}
                     startIcon={<AddIcon />}
-                    onClick={handleClickBtn}
+                    onClick={handleClickAddBtn}
                 >
                     Add
                 </Button>
                 <Button
                     variant="contained"
-                    className={clsx(classes.boxBtn, [!activeBtns.edit && classes.hidden])}
+                    className={clsx(classes.boxBtn, [selected.length !== 1 && classes.hidden])}
                     startIcon={<EditIcon />}
                 >
                     Edit
@@ -113,8 +114,9 @@ function TableView(props) {
                 <Button
                     variant="contained"
                     color="secondary"
-                    className={clsx(classes.boxBtn, [!activeBtns.delete && classes.hidden])}
+                    className={clsx(classes.boxBtn, [selected.length < 1 && classes.hidden])}
                     startIcon={<DeleteIcon />}
+                    onClick={handleClickDeleteBtn}
                 >
                     Delete
                 </Button>
