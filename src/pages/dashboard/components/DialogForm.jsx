@@ -9,21 +9,26 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { connect } from 'react-redux';
 import { dialogClose } from '../../../redux/actions/dialogFormActions';
+import { tableDataRowAdd } from '../../../redux/actions/tableDataActions';
 
 //
 
 function DialogForm(props) {
-    const [input, setInput] = useState(null);
+    const [input, setInput] = useState({ firstName: null, lastName: null, age: null });
     function handleClose() {
         props.dialogFormClose();
     }
     function handleSubmit(e) {
-        console.log(input);
+        props.tableDataRowAdd({ id: props.tableData.length, ...input });
 
         handleClose();
     }
-    function handleTextChange(e) {
-        setInput(e.target.value);
+    function handleTextChange(field) {
+        return function (e) {
+            const obj = { ...input };
+            obj[field] = e.target.value;
+            setInput(obj);
+        };
     }
 
     return (
@@ -33,20 +38,31 @@ function DialogForm(props) {
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                <DialogTitle id="form-dialog-title">Add </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We will
-                        send updates occasionally.
-                    </DialogContentText>
+                    <DialogContentText>To add new row fill the form below.</DialogContentText>
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="name"
-                        label="Email Address"
-                        type="email"
+                        id="firstName"
+                        label="First Name"
                         fullWidth
-                        onChange={handleTextChange}
+                        onChange={handleTextChange('firstName')}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="lastname"
+                        label="Last Name"
+                        fullWidth
+                        onChange={handleTextChange('lastName')}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="age"
+                        label="Age"
+                        type="number"
+                        fullWidth
+                        onChange={handleTextChange('age')}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -65,8 +81,10 @@ function DialogForm(props) {
 // Redux
 const mapStatetoProps = (state) => ({
     dialogForm: { ...state.dialogForm },
+    tableData: [...state.tableData],
 });
 const mapDispatchToProps = (dispatch) => ({
     dialogFormClose: (payload) => dispatch(dialogClose(payload)),
+    tableDataRowAdd: (payload) => dispatch(tableDataRowAdd(payload)),
 });
 export default connect(mapStatetoProps, mapDispatchToProps)(DialogForm);

@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Sidebar(props) {
     const classes = useStyles();
+    // eslint-disable-next-line no-unused-vars
     const { path, url } = useRouteMatch();
 
     return (

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     const classes = useStyles();
-    const { path, url } = useRouteMatch();
+    const { path } = useRouteMatch();
 
     return (
         <div className={classes.root}>

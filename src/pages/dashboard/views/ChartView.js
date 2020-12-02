@@ -9,7 +9,6 @@ const data = [
 ];
 
 function View1() {
-    console.log(11);
     return (
         <Paper>
             <Chart data={data}>

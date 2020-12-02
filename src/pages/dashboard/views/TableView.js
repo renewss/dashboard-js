@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { connect } from 'react-redux';
 import { dialogOpen, dialogClose } from '../../../redux/actions/dialogFormActions';
+import { tableDataRowAdd, tableDataRowRemove } from '../../../redux/actions/tableDataActions';
 
 import DialogForm from '../components/DialogForm';
 import styleConstants from '../../../constants/styleConstants';
@@ -14,16 +15,10 @@ const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'firstName', headerName: 'First name', width: 130 },
     { field: 'lastName', headerName: 'Last name', width: 130 },
-    {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 90,
-    },
+    { field: 'age', headerName: 'Age', type: 'number', width: 90 },
     {
         field: 'fullName',
         headerName: 'Full name',
-        description: 'This column has a value getter and is not sortable.',
         sortable: false,
         width: 180,
         valueGetter: (params) =>
@@ -71,10 +66,13 @@ function TableView(props) {
     // Hooks
     const classes = useStyles();
     const [activeBtns, setActiveBtns] = useState({ add: true, edit: false, delete: false });
-    const [data, setData] = useState(rows);
 
     useEffect(() => {
         props.dialogFormClose();
+
+        rows.forEach((row) => {
+            props.tableDataRowAdd(row);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [0]);
 
@@ -121,11 +119,11 @@ function TableView(props) {
                     Delete
                 </Button>
             </Box>
-            <DialogForm open={props.dialogForm.open} handleData={setData} />
+            <DialogForm />
 
             <Box className={classes.boxTable}>
                 <DataGrid
-                    rows={rows}
+                    rows={Object.values(props.tableData)}
                     columns={columns}
                     pageSize={10}
                     checkboxSelection
@@ -141,9 +139,12 @@ function TableView(props) {
 // Redux
 const mapStatetoProps = (state) => ({
     dialogForm: { ...state.dialogForm },
+    tableData: { ...state.tableData },
 });
 const mapDispatchToProps = (dispatch) => ({
     dialogFormOpen: (payload) => dispatch(dialogOpen(payload)),
     dialogFormClose: (payload) => dispatch(dialogClose(payload)),
+    tableDataRowAdd: (payload) => dispatch(tableDataRowAdd(payload)),
+    tableDataRowRemove: (payload) => dispatch(tableDataRowRemove(payload)),
 });
 export default connect(mapStatetoProps, mapDispatchToProps)(TableView);
