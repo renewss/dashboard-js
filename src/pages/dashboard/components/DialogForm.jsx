@@ -33,7 +33,7 @@ function DialogForm(props) {
         props.dialogFormClose();
     }
     function handleSubmit(e) {
-        if(props.tableData.isNew)
+        if(props.dialogForm.isNew)
             props.tableDataRowAdd({ id: props.tableData.length, ...input });
         else   
             props.tableDataRowEdit({id: fieldData.id, ...input})
@@ -80,8 +80,8 @@ function DialogForm(props) {
                     <TextField
                         margin="dense"
                         id="age"
-                        label="Age"
-                        type="Required"
+                        label="Required"
+                        type="number"
                         fullWidth
                         defaultValue={fieldData.age}
                         onChange={handleTextChange('age')}
