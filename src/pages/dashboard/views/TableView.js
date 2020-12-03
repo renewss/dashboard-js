@@ -92,6 +92,8 @@ function TableView(props) {
         selected.forEach((id) => {
             props.tableDataRowRemove({ id: id * 1 });
         });
+
+        setSelected([]);
     }
 
     //
@@ -125,6 +127,7 @@ function TableView(props) {
                     Delete
                 </Button>
             </Box>
+
             <DialogForm />
 
             <Box className={classes.boxTable}>
