@@ -7,6 +7,8 @@ import {
     IconButton,
     Button,
     CircularProgress,
+    Paper,
+    Box,
 } from '@material-ui/core';
 import { AccountCircle, Visibility, VisibilityOff } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
@@ -18,8 +20,18 @@ import styleConstants from '../../constants/styleConstants';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100vw',
+        maxWidth: '100vw !important',
         height: '100vh',
+        padding: '0',
+        margin: '0',
+
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    paper: {
+        padding: '40px 40px 80px 40px',
+
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -87,66 +99,71 @@ export default function Login() {
     }
 
     return (
-        <Container className={classes.root}>
-            <form onSubmit={handleSubmit}>
-                <FormControl variant="outlined">
-                    <TextField
-                        className={classes.input}
-                        required
-                        id="username"
-                        label="Username"
-                        variant="outlined"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <AccountCircle className={classes.colorSecondary} />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <TextField
-                        className={classes.input}
-                        required
-                        id="password"
-                        label="Password"
-                        variant="outlined"
-                        value={password}
-                        type={passHidden ? 'password' : 'text'}
-                        onChange={(e) => setPassword(e.target.value)}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        className={classes.colorSecondary}
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {passHidden ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+        <Container className={clsx(classes.root, classes.colorPrimary)}>
+            <Paper elevation={3}>
+                <Box className={classes.paper}>
+                    <form onSubmit={handleSubmit}>
+                        <FormControl variant="outlined">
+                            <TextField
+                                className={classes.input}
+                                required
+                                id="username"
+                                label="Username"
+                                variant="outlined"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <AccountCircle className={classes.colorSecondary} />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <TextField
+                                className={classes.input}
+                                required
+                                id="password"
+                                label="Password"
+                                variant="outlined"
+                                value={password}
+                                type={passHidden ? 'password' : 'text'}
+                                onChange={(e) => setPassword(e.target.value)}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                className={classes.colorSecondary}
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {passHidden ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
 
-                    <Button
-                        className={clsx(classes.button, classes.colorPrimary)}
-                        variant="contained"
-                        type="submit"
-                        size="large"
-                        disabled={submitted}
-                    >
-                        {submitted ? (
-                            <CircularProgress size={28} style={{ color: 'white' }} />
-                        ) : (
-                            'Sign In'
-                        )}
-                    </Button>
-                </FormControl>
-            </form>
+                            <Button
+                                className={clsx(classes.button, classes.colorPrimary)}
+                                variant="contained"
+                                type="submit"
+                                size="large"
+                                disabled={submitted}
+                            >
+                                {submitted ? (
+                                    <CircularProgress size={28} style={{ color: 'white' }} />
+                                ) : (
+                                    'Sign In'
+                                )}
+                            </Button>
+                        </FormControl>
+                    </form>
+                </Box>
+            </Paper>
+
             <Alert
                 open={alert.open}
                 severity={alert.severity}
