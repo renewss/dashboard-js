@@ -1,7 +1,7 @@
 import './assets/css/App.css';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
-import Login from './pages/login'
+import Login from './pages/login';
 import Home from './pages/home';
 import Dashboard from './pages/dashboard';
 
@@ -10,7 +10,7 @@ function App() {
         <div className="App">
             <Router>
                 <Switch>
-                    <Route exact path='/login'>
+                    <Route exact path="/login">
                         <Login />
                     </Route>
                     <Route exact path="/">
@@ -22,8 +22,8 @@ function App() {
                     <Route path="*">
                         <Redirect to="/" />
                     </Route>
-                </Switch> 
-             {/* <Footer /> */}
+                </Switch>
+                {/* <Footer /> */}
             </Router>
         </div>
     );

@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import Cookies from 'universal-cookie';
 
+import Alert from '../../components/Alert';
 import styleConstants from '../../constants/styleConstants';
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +48,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [passHidden, setPassHidden] = useState(true);
     const [submitted, setSubmitted] = useState(false);
+    const [alert, setAlert] = useState({ open: false, severity: '', message: '' });
 
     function handleClickShowPassword() {
         setPassHidden(!passHidden);
@@ -54,72 +56,103 @@ export default function Login() {
     function handleMouseDownPassword(e) {
         e.preventDefault();
     }
-    function handleSubmit() {
+    function handleSubmit(e) {
+        e.preventDefault();
         setSubmitted(true);
         const cookies = new Cookies();
 
         setTimeout(() => {
-            cookies.set('myCat', 'Pacman', { path: '/' });
-            window.location = '/home';
-        }, 300);
+            if (username === 'user' && password === '1') {
+                setAlert({ open: true, severity: 'success', message: 'Successfully Signed In' });
+                cookies.set('myCat', 'Pacman', { path: '/' });
+                window.location = '/home';
+            } else {
+                setAlert({
+                    open: true,
+                    severity: 'error',
+                    message: 'Incorrect username or password',
+                });
+                setUsername('');
+                setPassword('');
+                setSubmitted(false);
+            }
+        }, 700);
+    }
+    function handleAlertClose(event, reason) {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setAlert({ ...alert, open: false });
     }
 
     return (
         <Container className={classes.root}>
-            <FormControl variant="outlined">
-                <TextField
-                    className={classes.input}
-                    required
-                    id="username"
-                    label="Username"
-                    variant="outlined"
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <AccountCircle className={classes.colorSecondary} />
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <TextField
-                    className={classes.input}
-                    required
-                    id="password"
-                    label="Password"
-                    variant="outlined"
-                    type={passHidden ? 'password' : 'text'}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    className={classes.colorSecondary}
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {passHidden ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
+            <form onSubmit={handleSubmit}>
+                <FormControl variant="outlined">
+                    <TextField
+                        className={classes.input}
+                        required
+                        id="username"
+                        label="Username"
+                        variant="outlined"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <AccountCircle className={classes.colorSecondary} />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        className={classes.input}
+                        required
+                        id="password"
+                        label="Password"
+                        variant="outlined"
+                        value={password}
+                        type={passHidden ? 'password' : 'text'}
+                        onChange={(e) => setPassword(e.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        className={classes.colorSecondary}
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {passHidden ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
 
-                <Button
-                    className={clsx(classes.button, classes.colorPrimary)}
-                    variant="contained"
-                    htmlType="submit"
-                    size="large"
-                    disabled={submitted}
-                    onClick={handleSubmit}
-                >
-                    {submitted ? (
-                        <CircularProgress size={28} style={{ color: 'white' }} />
-                    ) : (
-                        'Sign In'
-                    )}
-                </Button>
-            </FormControl>
+                    <Button
+                        className={clsx(classes.button, classes.colorPrimary)}
+                        variant="contained"
+                        type="submit"
+                        size="large"
+                        disabled={submitted}
+                    >
+                        {submitted ? (
+                            <CircularProgress size={28} style={{ color: 'white' }} />
+                        ) : (
+                            'Sign In'
+                        )}
+                    </Button>
+                </FormControl>
+            </form>
+            <Alert
+                open={alert.open}
+                severity={alert.severity}
+                message={alert.message}
+                onClose={handleAlertClose}
+            />
         </Container>
     );
 }
