@@ -2,7 +2,7 @@ import React from 'react';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 
-export default function CustomizedSnackbars(props) {
+export default function Alert(props) {
     return (
         <Snackbar open={props.open} autoHideDuration={6000} onClose={props.onClose}>
             <MuiAlert
