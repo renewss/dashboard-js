@@ -64,7 +64,7 @@ export default function Login() {
         setTimeout(() => {
             if (username === 'user' && password === '1') {
                 setAlert({ open: true, severity: 'success', message: 'Successfully Signed In' });
-                cookies.set('auth', true, { path: '/' });
+                cookies.set('auth', true, { path: '/', expires: new Date(Date.now() + 100000) });
                 window.location = '/home';
             } else {
                 setAlert({

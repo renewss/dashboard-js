@@ -14,29 +14,33 @@ import { tableDataRowAdd, tableDataRowEdit } from '../../../redux/actions/tableD
 //
 
 function DialogForm(props) {
-    const [fieldData, setFieldData] = useState({id: null, firstName: null, lastName: null, age: null}) 
+    const [fieldData, setFieldData] = useState({
+        id: null,
+        firstName: null,
+        lastName: null,
+        age: null,
+    });
     const [input, setInput] = useState({ firstName: null, lastName: null, age: null });
 
     useEffect(() => {
-        if(props.dialogForm.isNew){
-            return 
+        if (props.dialogForm.isNew) {
+            return;
+        } else if (props.dialogForm.id) {
+            const { id, firstName, lastName, age } = props.tableData.filter(
+                (el) => el.id === props.dialogForm.id
+            )[0];
+            setFieldData({ id, firstName, lastName, age });
+            setInput({ firstName, lastName, age });
         }
-        else if(props.dialogForm.id){
-            const {id, firstName, lastName, age} = props.tableData.filter(el => el.id === props.dialogForm.id)[0];
-            setFieldData({id, firstName, lastName, age}) 
-            setInput({firstName, lastName, age})
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.dialogForm])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.dialogForm]);
 
     function handleClose() {
         props.dialogFormClose();
     }
     function handleSubmit(e) {
-        if(props.dialogForm.isNew)
-            props.tableDataRowAdd({ id: props.tableData.length, ...input });
-        else   
-            props.tableDataRowEdit({id: fieldData.id, ...input})
+        if (props.dialogForm.isNew) props.tableDataRowAdd({ id: props.tableData.length, ...input });
+        else props.tableDataRowEdit({ id: fieldData.id, ...input });
 
         handleClose();
     }
@@ -47,8 +51,6 @@ function DialogForm(props) {
             setInput(obj);
         };
     }
-
-
 
     return (
         <div>
@@ -108,6 +110,6 @@ const mapStatetoProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     dialogFormClose: (payload) => dispatch(dialogClose(payload)),
     tableDataRowAdd: (payload) => dispatch(tableDataRowAdd(payload)),
-    tableDataRowEdit: (payload) => dispatch(tableDataRowEdit(payload))
+    tableDataRowEdit: (payload) => dispatch(tableDataRowEdit(payload)),
 });
 export default connect(mapStatetoProps, mapDispatchToProps)(DialogForm);
