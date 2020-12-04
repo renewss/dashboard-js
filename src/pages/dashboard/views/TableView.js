@@ -6,7 +6,11 @@ import clsx from 'clsx';
 
 import { connect } from 'react-redux';
 import { dialogOpen, dialogClose } from '../../../redux/actions/dialogFormActions';
-import { tableDataRowAdd, tableDataRowEdit, tableDataRowRemove } from '../../../redux/actions/tableDataActions';
+import {
+    tableDataRowAdd,
+    tableDataRowEdit,
+    tableDataRowRemove,
+} from '../../../redux/actions/tableDataActions';
 
 import DialogForm from '../components/DialogForm';
 import styleConstants from '../../../constants/styleConstants';
@@ -82,10 +86,10 @@ function TableView(props) {
     }
 
     function handleClickAddBtn() {
-        props.dialogFormOpen({isNew: true});
+        props.dialogFormOpen({ isNew: true });
     }
-    function handleClickEditBtn(){
-        props.dialogFormOpen({id: selected[0] * 1});
+    function handleClickEditBtn() {
+        props.dialogFormOpen({ id: selected[0] * 1 });
     }
     function handleClickDeleteBtn() {
         console.log(selected);
@@ -154,7 +158,7 @@ const mapDispatchToProps = (dispatch) => ({
     dialogFormOpen: (payload) => dispatch(dialogOpen(payload)),
     dialogFormClose: (payload) => dispatch(dialogClose(payload)),
     tableDataRowAdd: (payload) => dispatch(tableDataRowAdd(payload)),
-    tableDataRowEdit: payload => dispatch(tableDataRowEdit(payload)),
+    tableDataRowEdit: (payload) => dispatch(tableDataRowEdit(payload)),
     tableDataRowRemove: (payload) => dispatch(tableDataRowRemove(payload)),
 });
 export default connect(mapStatetoProps, mapDispatchToProps)(TableView);

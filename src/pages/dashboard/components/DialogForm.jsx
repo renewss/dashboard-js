@@ -39,7 +39,8 @@ function DialogForm(props) {
         props.dialogFormClose();
     }
     function handleSubmit(e) {
-        if (props.dialogForm.isNew) props.tableDataRowAdd({ id: props.tableData.length, ...input });
+        if (props.dialogForm.isNew)
+            props.tableDataRowAdd({ id: props.tableData.length + 1, ...input });
         else props.tableDataRowEdit({ id: fieldData.id, ...input });
 
         handleClose();
